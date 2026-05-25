@@ -1,12 +1,12 @@
 ---
-name: terraform-actionizer
+name: terraform-actionize
 description: Finds and implements native Terraform Actions for Azure resources in a Terraform codebase. Supports the azurerm and azapi providers. Requires terraform >= 1.14 and azapi >= 2.9.
 when_to_use: Use when the user wants to discover Terraform Actions compatible with their Terraform resources, migrate existing azapi Terraform Actions to azurerm, generate terraform apply -invoke= commands for their actions, or find new day-2 operations (start/stop, key rotation, failover, cache purge) available for their Azure resources.
 allowed-tools: Read
 license: MIT
 compatibility: terraform >= 1.14, azapi >= 2.9
 ---
-# Terraform Actionizer
+# Terraform Actionize
 
 ## Instructions
 
@@ -31,7 +31,13 @@ If no new actions are applicable to the codebase, or the user does not wish to a
 ### Step 5:  Implement the User's Requested Action(s) Based on Supplied Input
 Finally, confirm with the user where the actions should be implemented. By default offer to place them in an `actions.tf` file, however you can also recommend to co-locate actions next to the resources they act upon by placing them directly after the resources themselves. For each new action selected to implement, use the `examples/azapi-actions.md` and `examples/azapi-vs-azurerm-actions.md` and ensure that any parameters listed have their defaults called out as well as information for the user to decide what values they want to use in creating each `action.azapi_resource_action`. If migrating from an `azapi` to `azurerm` action, please use `examples/azapi-vs-azurerm-actions.md` as well as the latest information on the `azurerm` provider for said Terraform action (including `references/azurerm-actions.md`) as your source of truth.
 
+### Step 5.5: Confirm Invocation Arguments
+
+Before proceeding, ask the user whether they use any additional `terraform apply` arguments 
+(e.g. `-var`, `-var-file`, `-backend-config`). Record the answer and apply it to all 
+generated `terraform apply -invoke=` commands and any documentation.
+
 ### Step 6: Provide Documentation
-Once the actions are implemented, request the user to confirm generating an `actionizer.md` or other file/location on how to invoke all the actions created (or another method if supplied). Each doc should follow `examples/actions-docs.md`. Confirm before writing the docs if the user has a particular method that is different from the base action invocation, meaning whether they use `-var-file` or `-var` args or any other arguments when running `terraform apply -invoke=`
+Once the actions are implemented, request the user to confirm generating an `actionize.md` or other file/location on how to invoke all the actions created (or another method if supplied). Each doc should follow `examples/actions-docs.md`.
 
 Once completed with adding the actions and generating docs provide a success message, a nerd emoji  🤓, and something fun or whitty about doing day-2 ops with Terraform.
