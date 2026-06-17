@@ -1,4 +1,4 @@
-# terraform-actionizer
+# terraform-actionize
 
 A Claude Code skill that finds and implements native Terraform Actions for Azure resources. Supports day-2 operations like key rotation, start/stop, failover, and cache purge across the `azurerm` and `azapi` providers.
 
@@ -16,13 +16,13 @@ ln -s ~/terraform-actionizer/terraform-actionizer ~/.claude/skills/terraform-act
 Then invoke it in any Claude Code session:
 
 ```
-/terraform-actionizer
+/terraform-actionize
 ```
 
 ## Updating
 
 ```bash
-cd ~/terraform-actionizer && git pull
+cd ~/terraform-actionize && git pull
 ```
 
 ## Learn More
