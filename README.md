@@ -9,8 +9,8 @@ A Claude Code skill that finds and implements native Terraform Actions for Azure
 Clone the repo and symlink the skill into your Claude Code skills directory:
 
 ```bash
-git clone https://github.com/codycodescloud/terraform-actionizer.git ~/terraform-actionizer
-ln -s ~/terraform-actionizer/terraform-actionizer ~/.claude/skills/terraform-actionizer
+git clone https://github.com/codycodescloud/terraform-actionize.git ~/terraform-actionize
+ln -s ~/terraform-actionize/terraform-actionize ~/.claude/skills/terraform-actionize
 ```
 
 Then invoke it in any Claude Code session:
