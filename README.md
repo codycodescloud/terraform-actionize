@@ -26,8 +26,8 @@ cd ~/terraform-actionize && git pull
 ```
 
 ## Learn More
-
-[The Terraform Actions Are Inside the AzAPI](https://blog.codycodes.cloud/the-terraform-actions-are-inside-the-azapi) — background on how native Terraform Actions work via the AzAPI provider.
+* [Terraform-Actionize Blog Post](https://blog.codycodes.cloud/terraform-actionize)
+* [Unlocking more Terraform Actions on Azure with AzAPI](https://blog.codycodes.cloud/unlocking-more-terraform-actions-on-azure-with-azapi)
 
 ## License
 
