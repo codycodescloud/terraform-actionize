@@ -31,6 +31,18 @@ If no new actions are applicable to the codebase, or the user does not wish to a
 ### Step 5:  Implement the User's Requested Action(s) Based on Supplied Input
 Finally, confirm with the user where the actions should be implemented. By default offer to place them in an `actions.tf` file, however you can also recommend to co-locate actions next to the resources they act upon by placing them directly after the resources themselves. For each new action selected to implement, use the `references/examples-azapi-action.md` and `references/examples-azapi-vs-azurerm-actions.md` and ensure that any parameters listed have their defaults called out as well as information for the user to decide what values they want to use in creating each `action.azapi_resource_action`. If migrating from an `azapi` to `azurerm` action, please use `references/examples-azapi-vs-azurerm-actions.md` as well as the latest information on the `azurerm` provider for said Terraform action (including `references/azurerm-actions.md`) as your source of truth.
 
+As a minimal example, powering on a virtual machine with the native azurerm action is just a `power_on` for the `power_action` argument:
+
+```hcl
+# Invoke with: terraform apply -invoke=action.azurerm_virtual_machine_power.start_vm
+action "azurerm_virtual_machine_power" "start_vm" {
+  config {
+    virtual_machine_id = azurerm_linux_virtual_machine.this.id
+    power_action       = "power_on"
+  }
+}
+```
+
 ### Step 5.5: Confirm Invocation Arguments
 
 Before proceeding, ask the user whether they use any additional `terraform apply` arguments 
