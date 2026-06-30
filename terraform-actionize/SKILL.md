@@ -46,8 +46,14 @@ Decide which actions to contribute to the user's codebase by cross-referencing t
   *available* action names; a reference action is a candidate only if its name appears in it
   (if discovery came from Step 4.B, apply its upgrade caveat first.)
 - **References = metadata.** For each candidate, read its entry in `references/azurerm-actions.md`
-  or `references/azapi-actions.md` for its category (standard, purge, migration target) and
-  implementation snippet.
+  or `references/azapi-actions.md` for its category (standard, purge, data-plane) and
+  implementation snippet. If a discovered action has no entry yet — the references haven't been
+  updated to cover it — derive its metadata from documentation: if the Terraform MCP server is
+  available, use it to look up that action's docs; otherwise WebFetch the provider's doc for that
+  action. HashiCorp providers share a docs layout, so an action `<provider>_<name>` is at
+  `https://raw.githubusercontent.com/hashicorp/terraform-provider-<provider>/main/website/docs/actions/<name>.html.markdown`
+  (e.g. `azurerm_virtual_machine_power` → `.../terraform-provider-azurerm/main/website/docs/actions/virtual_machine_power.html.markdown`).
+  If that path 404s, search the action on the Terraform Registry instead.
 - **Existing code (Step 1) = exclusion.** Drop actions already implemented — *unless* the
   existing usage is the non-native resource form (`resource.azapi_resource_action` / `action.azapi_resource_action`) and an
   available native equivalent (`action.azurerm_*`) exists.
