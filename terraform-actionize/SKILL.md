@@ -19,14 +19,58 @@ Use the `references/azurerm-actions.md` document to understand what skills curre
 ### Step 3: Review Potential AzAPI Actions to Add to Codebase
 Use the `references/azapi-actions.md` document to understand what skills currently exist for Terraform Actions in the `azapi` provider.
 
-### Step 4: Confirm with User Actions to Implement
-Work with the user to decide which actions they want to implement based on the `azurerm-actions.md` and `azapi-actions.md` references: these will turn into actions they want to have contributed to their codebase. Only surface actions that do not already exist in the codebase — do not suggest actions the user has already implemented, unless they are not native Terraform Actions and there is an equivalent (e.g. `resource.azapi_resource_action` vs `action.azapi_resource_action`). Pay particular attention to the following:
-* If there are any actions using `action.azapi_resource_action` that can be migrated, then you can give a ✨ emoji next to each resource with the recommendation to migrate as well as the name of the resource to migrate to.
-* If there are any actions listed under irreversible / persistent data purge section, please indicate their potential for permanent data deletion and give a ⚠️ emoji next to them
-* If there are any operations that cannot be used with the `azapi` provider because they use the data plane, you can call them out and give them a 🔎 emoji. These cannot be turned into usable actions, but are helpful to surface for the user's understanding
-* All other implementable `azapi` or `azurerm` actions can simply be identified with a checkmark emoji ✔️
+### Step 4: Discover AzureRM Actions
+Discover which `azurerm` actions the workspace's installed provider supports; if the local
+schema can't be read, fall back to the latest published list. DO NOT RUN OR READ
+`terraform providers schema -json` DIRECTLY: the script distills the specific provider info as the raw schema is far
+too large for context.
 
-If no new actions are applicable to the codebase, or the user does not wish to add any, provide a brief summary of what was found (e.g. resources scanned, any existing actions already in place) and end the skill gracefully.
+#### Step 4.A: Use the script for azurerm action discovery
+When `bash`, `jq`, and `terraform` are available, run:
+```bash
+bash scripts/discover-azurerm-actions.sh 
+```
+This is authoritative: it reflects the `azurerm` version installed in the current workspace.
+If the script does not execute or returns a non-zero exit code, go to Step 4.B.
+
+#### Step 4.B: Fall back to the latest published list
+Use WebFetch to pull https://raw.githubusercontent.com/quixoticmonk/extract-provider-supported-actions/main/actions-report.json and filter for the  `azurerm` provider. This is the latest published list, not the user's
+installed version — before implementing any action from it, tell the user to run
+`terraform init -upgrade` so a compatible provider is installed (and to raise their version
+constraint if the action still doesn't resolve).
+
+### Step 5: Confirm with User Actions to Implement
+Decide which actions to contribute to the user's codebase by cross-referencing three sources:
+
+- **Discovery (Step 4) = availability gate.** Treat the discovered list as the set of
+  *available* action names; a reference action is a candidate only if its name appears in it
+  (if discovery came from Step 4.B, apply its upgrade caveat first.)
+- **References = metadata.** For each candidate, read its entry in `references/azurerm-actions.md`
+  or `references/azapi-actions.md` for its category (standard, purge, data-plane) and
+  implementation snippet. If a discovered action has no entry yet — the references haven't been
+  updated to cover it — derive its metadata from documentation: if the Terraform MCP server is
+  available, use it to look up that action's docs; otherwise WebFetch the provider's doc for that
+  action. HashiCorp providers share a docs layout, so an action `<provider>_<name>` is at
+  `https://raw.githubusercontent.com/hashicorp/terraform-provider-<provider>/main/website/docs/actions/<name>.html.markdown`
+  (e.g. `azurerm_virtual_machine_power` → `.../terraform-provider-azurerm/main/website/docs/actions/virtual_machine_power.html.markdown`).
+  If that path 404s, search the action on the Terraform Registry instead.
+- **Existing code (Step 1) = exclusion.** Drop actions already implemented — *unless* the
+  existing usage is the non-native resource form (`resource.azapi_resource_action` / `action.azapi_resource_action`) and an
+  available native equivalent (`action.azurerm_*`) exists.
+
+> Data-plane-only operations using `action.azapi_resource_action` are exempt from the availability gate — they won't work with this action because they use separate endpoints. Surface them for awareness only.
+
+**Tag each surfaced action so the user can scan intent and risk:**
+* ✨ — an existing generic `azapi` action that can be migrated to an available `azurerm` native
+  equivalent; put ✨ next to the resource with the recommendation and the **name of the target
+  action** to migrate to.
+* ⚠️ — listed under the irreversible / persistent data-purge section; flag the potential for
+  permanent data deletion.
+* 🔎 — a data-plane operation that cannot become a usable action (azapi can't reach the data
+  plane); surface for understanding only.
+* ✔️ — any other implementable `azapi` or `azurerm` action.
+
+Present the tagged list and let the user pick which actions to implement.
 
 ### Step 5:  Implement the User's Requested Action(s) Based on Supplied Input
 Finally, confirm with the user where the actions should be implemented. By default offer to place them in an `actions.tf` file, however you can also recommend to co-locate actions next to the resources they act upon by placing them directly after the resources themselves. For each new action selected to implement, use the `references/examples-azapi-action.md` and `references/examples-azapi-vs-azurerm-actions.md` and ensure that any parameters listed have their defaults called out as well as information for the user to decide what values they want to use in creating each `action.azapi_resource_action`. If migrating from an `azapi` to `azurerm` action, please use `references/examples-azapi-vs-azurerm-actions.md` as well as the latest information on the `azurerm` provider for said Terraform action (including `references/azurerm-actions.md`) as your source of truth.
