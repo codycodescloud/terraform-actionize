@@ -19,3 +19,43 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+----------------------------------------------------------------------------
+
+SUPPLEMENTAL TERMS
+
+1. Generated Output. This Software is an AI agent skill that instructs a
+   large language model to produce Terraform configuration and related files
+   ("Generated Output"). Generated Output is probabilistic, may be incorrect,
+   incomplete, insecure, or out of date, and may change, restart, stop,
+   fail over, rotate credentials for, or delete real cloud resources when
+   applied. The copyright holders and contributors make no representation
+   about, and accept no responsibility or liability for, any Generated
+   Output or for any action taken or infrastructure changed as a result of
+   it. You are solely responsible for reviewing, testing (including
+   `terraform plan`), and approving all Generated Output before applying or
+   invoking it, and for any cost, outage, data loss, security incident, or
+   other damage arising from its use.
+
+2. Limitation of Liability. TO THE FULLEST EXTENT PERMITTED BY LAW, IN NO
+   EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY INDIRECT,
+   INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES,
+   INCLUDING LOSS OF DATA, REVENUE, PROFITS, OR SERVICE AVAILABILITY, EVEN IF
+   ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+3. Third-Party Software and Trademarks. This Software does not include or
+   redistribute Terraform, the AzureRM provider, or the AzAPI provider.
+   It references them and their documented behavior, which remain the
+   property of their respective owners and are governed by their own
+   licenses and terms, including:
+   - Terraform: Copyright (c) HashiCorp, Inc., an IBM Company, licensed under
+     the Business Source License 1.1 (https://github.com/hashicorp/terraform).
+   - terraform-provider-azurerm: Copyright (c) HashiCorp, Inc., an IBM
+     Company, licensed under the Mozilla Public License 2.0.
+   - terraform-provider-azapi: Copyright (c) Microsoft Corporation, licensed
+     under the Mozilla Public License 2.0.
+   Nothing in this license grants any rights to those works. HashiCorp,
+   Terraform, IBM, Microsoft, and Azure are trademarks of their respective
+   owners. This project is independent and is not affiliated with,
+   endorsed by, or sponsored by any of them. Your use of those products is
+   subject to their respective licenses.
